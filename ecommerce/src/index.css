@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #fff;
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+}
+#root { width: 100%; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+@keyframes bounceIn {
+  0%   { transform: scale(0.4); opacity: 0; }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.fade-in-up { animation: fadeInUp 0.35s ease-out both; }
+.bounce-in  { animation: bounceIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+.scrollbar-hide                    { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+::-webkit-scrollbar                { width: 4px; height: 4px; }
+::-webkit-scrollbar-track          { background: transparent; }
+::-webkit-scrollbar-thumb          { background: #e5e7eb; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover    { background: #d1d5db; }
+
+.shimmer {
+  background: linear-gradient(90deg, #f9fafb 0%, #f3f4f6 40%, #f9fafb 60% 100%);
+  background-size: 800px 104px;
+  animation: shimmer 1.5s linear infinite;
+}
+
+.leaflet-container { height: 100%; width: 100%; border-radius: 12px; }
+:focus-visible { outline: 2px solid #f97316; outline-offset: 2px; border-radius: 6px; }
