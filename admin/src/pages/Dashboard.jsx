@@ -437,7 +437,8 @@ export default function Dashboard({ orders, motorizados = [] }) {
             {promos.map(promo => (
               <div
                 key={promo.id}
-                className={`relative shrink-0 w-48 bg-linear-to-r ${promo.color || 'from-orange-500 to-red-600'} rounded-2xl p-4 overflow-hidden`}
+                className="relative shrink-0 w-48 rounded-2xl p-4 overflow-hidden"
+                style={{ background: promo.color || 'linear-gradient(to right, #f97316, #dc2626)' }}
               >
                 {/* Círculo decorativo igual al del ecommerce Hero */}
                 <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-1/3 translate-x-1/3" />
@@ -532,7 +533,8 @@ export default function Dashboard({ orders, motorizados = [] }) {
             <div className="flex items-center justify-center h-40 text-slate-500 text-sm">Sin datos</div>
           ) : (
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <ResponsiveContainer width={140} height={140}>
+              <div className="w-36 h-36 shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={statusDist} cx="50%" cy="50%" innerRadius={38} outerRadius={60} paddingAngle={3} dataKey="value">
                     {statusDist.map((e, i) => (
@@ -545,6 +547,7 @@ export default function Dashboard({ orders, motorizados = [] }) {
                   />
                 </PieChart>
               </ResponsiveContainer>
+              </div>
               <div className="flex-1 space-y-2.5">
                 {statusDist.map((e, i) => {
                   const color = STATUS_COLORS[e.name] || PIE_COLORS[i % PIE_COLORS.length];

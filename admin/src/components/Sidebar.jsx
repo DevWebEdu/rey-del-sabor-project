@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, Package, Flame, X, LogOut, Bike, Users, UserCircle, AlertTriangle, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Flame, X, LogOut, Bike, Users, UserCircle, AlertTriangle, ChevronRight, Settings } from 'lucide-react';
 
 const NAV_SECTIONS = [
   {
@@ -22,7 +22,8 @@ const NAV_SECTIONS = [
     id: 'admin',
     heading: 'Administración',
     items: [
-      { id: 'usuarios', label: 'Usuarios', icon: Users, roles: ['admin'], tag: 'Admin' },
+      { id: 'usuarios',       label: 'Usuarios',       icon: Users,    roles: ['admin'], tag: 'Admin' },
+      { id: 'configuracion',  label: 'Configuración',  icon: Settings, roles: ['admin', 'operario'] },
     ],
   },
 ];

@@ -100,6 +100,36 @@ async function initDB() {
     await client.query(`CREATE UNIQUE INDEX IF NOT EXISTS idx_pedidos_codigo ON pedidos(codigo)`);
     await client.query(`ALTER TABLE promociones ADD COLUMN IF NOT EXISTS inicio_vigencia TIMESTAMP`);
     await client.query(`ALTER TABLE promociones ADD COLUMN IF NOT EXISTS productos        TEXT`);
+    await client.query(`ALTER TABLE promociones ADD COLUMN IF NOT EXISTS dias_semana     TEXT`);
+    await client.query(`ALTER TABLE promociones ADD COLUMN IF NOT EXISTS vigencia_tipo   TEXT DEFAULT 'rango'`);
+    await client.query(`ALTER TABLE promociones ADD COLUMN IF NOT EXISTS imagen_url      TEXT`);
+
+    // Tabla de configuración del local
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS configuracion (
+        clave TEXT PRIMARY KEY,
+        valor TEXT
+      )
+    `);
+    const configDefaults = [
+      ['nombre_local',    'El Rey del Sabor'],
+      ['whatsapp',        '51999999999'],
+      ['telefono',        '+51 999 999 999'],
+      ['direccion',       'Av. Principal 123, Lima, Perú'],
+      ['horario_semana',  '11:00 am – 10:00 pm'],
+      ['horario_sabado',  '11:00 am – 11:00 pm'],
+      ['horario_domingo', '11:00 am – 10:00 pm'],
+      ['horario_resumen', 'Lun–Dom · 11am–10pm'],
+      ['delivery_tiempo', '30–40 min'],
+      ['delivery_radio',  '2 km'],
+      ['pedido_minimo',   '24'],
+    ];
+    for (const [clave, valor] of configDefaults) {
+      await client.query(
+        `INSERT INTO configuracion (clave, valor) VALUES ($1,$2) ON CONFLICT (clave) DO NOTHING`,
+        [clave, valor]
+      );
+    }
 
     // Tabla pivote para tracking de pedidos (pedido ↔ cliente ↔ motorizado)
     await client.query(`

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Menu, Bell, RefreshCw, LayoutDashboard, ShoppingBag,
-  Package, Bike, UserCircle, Users, X, Clock, ShoppingCart,
+  Package, Bike, UserCircle, Users, X, Clock, ShoppingCart, Settings,
 } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
@@ -10,6 +10,7 @@ import Products from './pages/Products';
 import GestionMotorizados from './pages/GestionMotorizados';
 import Clientes from './pages/Clientes';
 import Usuarios from './pages/Usuarios';
+import Configuracion from './pages/Configuracion';
 import MotorizadoView from './pages/MotorizadoView';
 import Login from './pages/Login';
 import { useAuth } from './context/AuthContext';
@@ -23,6 +24,7 @@ const PAGE_META = {
   'gestion-motorizados': { label: 'Gestión Motorizados',  icon: Bike },
   clientes:              { label: 'Clientes',             icon: UserCircle },
   usuarios:              { label: 'Usuarios',             icon: Users },
+  configuracion:         { label: 'Configuración',        icon: Settings },
 };
 
 function todayLima() {
@@ -231,7 +233,7 @@ export default function App() {
                     {/* Overlay cierre */}
                     <div className="fixed inset-0 z-40" onClick={() => setNotifOpen(false)} />
 
-                    <div className="absolute top-11 right-0 w-80 bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl shadow-black/60 z-50 overflow-hidden">
+                    <div className="absolute top-11 right-0 w-[min(320px,calc(100vw-1rem))] bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl shadow-black/60 z-50 overflow-hidden">
                       {/* Header */}
                       <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800">
                         <div className="flex items-center gap-2">
@@ -340,10 +342,11 @@ export default function App() {
           {safePage === 'gestion-motorizados'   && <GestionMotorizados orders={orders} />}
           {safePage === 'clientes'              && <Clientes />}
           {safePage === 'usuarios' && user.rol === 'admin' && <Usuarios />}
+          {safePage === 'configuracion' && <Configuracion />}
         </main>
 
         {/* ── Footer ── */}
-        <footer className="border-t border-slate-800/60 px-6 py-3 flex items-center justify-between shrink-0">
+        <footer className="border-t border-slate-800/60 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-2 shrink-0">
           <p className="text-slate-700 text-xs">El Rey del Sabor · Panel Admin</p>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 bg-green-400 rounded-full" />

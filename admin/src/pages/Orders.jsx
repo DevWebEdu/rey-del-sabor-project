@@ -179,13 +179,13 @@ export default function Orders({ orders, onRefresh }) {
                 <tr className="border-b border-slate-700 text-slate-400 text-xs uppercase tracking-wider">
                   <th className="text-left px-4 py-3 font-semibold">Código</th>
                   <th className="text-left px-4 py-3 font-semibold">Cliente</th>
-                  <th className="text-left px-4 py-3 font-semibold">Hora</th>
-                  <th className="text-left px-4 py-3 font-semibold">Tipo</th>
-                  <th className="text-left px-4 py-3 font-semibold">Pago</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden sm:table-cell">Hora</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Tipo</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden md:table-cell">Pago</th>
                   <th className="text-right px-4 py-3 font-semibold">Total</th>
-                  <th className="text-right px-4 py-3 font-semibold">Cambio</th>
+                  <th className="text-right px-4 py-3 font-semibold hidden lg:table-cell">Cambio</th>
                   <th className="text-left px-4 py-3 font-semibold">Estado</th>
-                  <th className="text-left px-4 py-3 font-semibold">Motorizado</th>
+                  <th className="text-left px-4 py-3 font-semibold hidden sm:table-cell">Motorizado</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,12 +218,12 @@ export default function Orders({ orders, onRefresh }) {
                       </td>
 
                       {/* Hora */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap hidden sm:table-cell">
                         <span className="text-slate-400 text-xs">{hora}</span>
                       </td>
 
                       {/* Tipo entrega */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap hidden md:table-cell">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                           order.tipo_entrega === 0
                             ? 'bg-teal-500/20 text-teal-400'
@@ -234,7 +234,7 @@ export default function Orders({ orders, onRefresh }) {
                       </td>
 
                       {/* Pago */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap hidden md:table-cell">
                         <span className="text-slate-300 capitalize text-xs">{order.tipo_pago || '—'}</span>
                       </td>
 
@@ -244,7 +244,7 @@ export default function Orders({ orders, onRefresh }) {
                       </td>
 
                       {/* Cambio */}
-                      <td className="px-4 py-3 text-right whitespace-nowrap">
+                      <td className="px-4 py-3 text-right whitespace-nowrap hidden lg:table-cell">
                         {order.tipo_pago !== 'efectivo' || order.monto_pago_cliente == null ? (
                           <span className="text-slate-600 text-xs">—</span>
                         ) : (
@@ -264,7 +264,7 @@ export default function Orders({ orders, onRefresh }) {
                       </td>
 
                       {/* Motorizado */}
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap hidden sm:table-cell">
                         {order.motorizado_nombre ? (
                           <div className="flex items-center gap-1.5 text-xs text-purple-400">
                             <Bike size={12} />

@@ -100,7 +100,7 @@ export default function Usuarios() {
       </div>
 
       {/* Resumen por rol */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {Object.entries(ROL_CONFIG).map(([rol, cfg]) => {
           const count = usuarios.filter(u => u.rol === rol).length;
           return (
@@ -231,7 +231,7 @@ export default function Usuarios() {
               {/* Rol */}
               <div>
                 <label className="block text-slate-400 text-xs font-semibold mb-2">Rol del usuario</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {Object.entries(ROL_CONFIG).map(([rol, cfg]) => (
                     <button key={rol} type="button"
                       onClick={() => setForm(f => ({ ...f, rol }))}

@@ -18,7 +18,7 @@ const apiToLocal = (p) => ({
 // ── Skeleton ──────────────────────────────────────────────────────────
 function CardSkeleton() {
   return (
-    <div className="w-36 sm:w-44 shrink-0 bg-white border border-gray-100 rounded-xl overflow-hidden">
+    <div className="w-32 sm:w-44 shrink-0 bg-white border border-gray-100 rounded-xl overflow-hidden">
       <div className="aspect-4/3 shimmer" />
       <div className="p-3 space-y-2">
         <div className="h-3 shimmer rounded-full w-4/5" />
@@ -48,7 +48,7 @@ const ProductCard = memo(function ProductCard({ product, onGoToCheckout, index =
       <div
         onClick={() => setModalOpen(true)}
         style={{ animationDelay: `${index * 35}ms` }}
-        className="fade-in-up relative bg-white border border-gray-100 rounded-xl overflow-hidden cursor-pointer hover:border-gray-200 hover:shadow-md transition-all duration-200 group w-36 sm:w-44 shrink-0"
+        className="fade-in-up relative bg-white border border-gray-100 rounded-xl overflow-hidden cursor-pointer hover:border-gray-200 hover:shadow-md transition-all duration-200 group w-32 sm:w-44 shrink-0"
       >
         {/* Imagen */}
         <div className="relative aspect-4/3 overflow-hidden bg-gray-50">
@@ -162,7 +162,7 @@ function CategoryRow({ cat, onGoToCheckout }) {
   return (
     <div className="mb-10 sm:mb-14">
       {/* Encabezado */}
-      <div className="flex items-center justify-between mb-4 sm:mb-5 px-4 sm:px-6">
+      <div className="flex items-center justify-between mb-3 sm:mb-5 px-3 sm:px-6">
         <div className="flex items-center gap-3">
           <span className="text-xl">{cat.emoji}</span>
           <div>
@@ -194,7 +194,7 @@ function CategoryRow({ cat, onGoToCheckout }) {
         </div>
       </div>
 
-      <div className="h-px bg-gray-100 mb-4 sm:mb-5 mx-4 sm:mx-6" />
+      <div className="h-px bg-gray-100 mb-3 sm:mb-5 mx-3 sm:mx-6" />
 
       {/* Carrusel */}
       <div className="relative">
@@ -202,20 +202,20 @@ function CategoryRow({ cat, onGoToCheckout }) {
         {canPrev && (
           <button
             onClick={() => scroll(-1)}
-            className="sm:hidden absolute left-1 top-1/2 -translate-y-6 z-10 w-8 h-8 bg-white border border-gray-200 rounded-full shadow-sm flex items-center justify-center text-gray-500"
+            className="sm:hidden absolute left-0.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-white border border-gray-200 rounded-full shadow-sm flex items-center justify-center text-gray-500"
           >
             <ChevronLeft size={16} />
           </button>
         )}
 
         {loading ? (
-          <div className="flex gap-3 px-4 sm:px-6 overflow-hidden">
+          <div className="flex gap-2 sm:gap-3 px-3 sm:px-6 overflow-hidden">
             {[1, 2, 3, 4].map(i => <CardSkeleton key={i} />)}
           </div>
         ) : (
           <div
             ref={trackRef}
-            className="flex gap-3 px-4 sm:px-6 overflow-x-auto scrollbar-hide scroll-smooth pb-1"
+            className="flex gap-2 sm:gap-3 px-3 sm:px-6 overflow-x-auto scrollbar-hide scroll-smooth pb-1"
           >
             {products.map((p, i) => (
               <div key={p.id} data-card>
@@ -229,7 +229,7 @@ function CategoryRow({ cat, onGoToCheckout }) {
         {canNext && (
           <button
             onClick={() => scroll(1)}
-            className="sm:hidden absolute right-1 top-1/2 -translate-y-6 z-10 w-8 h-8 bg-white border border-gray-200 rounded-full shadow-sm flex items-center justify-center text-gray-500"
+            className="sm:hidden absolute right-0.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-white border border-gray-200 rounded-full shadow-sm flex items-center justify-center text-gray-500"
           >
             <ChevronRight size={16} />
           </button>

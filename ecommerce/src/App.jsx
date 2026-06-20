@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { CartProvider } from './context/CartContext';
 import { ProductsProvider } from './context/ProductsContext';
 import { AuthProvider } from './context/AuthContext';
+import { ConfigProvider, useConfig } from './context/ConfigContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductGrid from './components/ProductGrid';
@@ -14,6 +15,7 @@ const AuthModal    = lazy(() => import('./components/AuthModal'));
 const MisPedidos   = lazy(() => import('./pages/MisPedidos'));
 
 function Footer() {
+  const config = useConfig();
   return (
     <footer className="border-t border-gray-100 mt-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
@@ -25,7 +27,7 @@ function Footer() {
               <div className="w-8 h-8 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
                 <Flame size={16} className="text-white" />
               </div>
-              <span className="font-bold text-gray-900">El Rey del Sabor</span>
+              <span className="font-bold text-gray-900">{config.nombre_local}</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               Los mejores pollos a la brasa de Lima, preparados con nuestra receta secreta y leña seleccionada.
@@ -37,9 +39,9 @@ function Footer() {
             <h3 className="font-semibold text-gray-900 text-sm mb-3">Horarios</h3>
             <div className="space-y-2">
               {[
-                { day: 'Lunes – Viernes', hours: '11:00 am – 10:00 pm' },
-                { day: 'Sábado',          hours: '11:00 am – 11:00 pm' },
-                { day: 'Domingo',         hours: '11:00 am – 10:00 pm' },
+                { day: 'Lunes – Viernes', hours: config.horario_semana },
+                { day: 'Sábado',          hours: config.horario_sabado },
+                { day: 'Domingo',         hours: config.horario_domingo },
               ].map(h => (
                 <div key={h.day} className="flex items-start gap-2">
                   <Clock size={13} className="text-gray-300 mt-0.5 shrink-0" />
@@ -58,15 +60,15 @@ function Footer() {
             <div className="space-y-2.5">
               <div className="flex items-start gap-2">
                 <MapPin size={13} className="text-gray-300 mt-0.5 shrink-0" />
-                <p className="text-sm text-gray-500 leading-snug">Av. Principal 123, Lima, Perú</p>
+                <p className="text-sm text-gray-500 leading-snug">{config.direccion}</p>
               </div>
               <div className="flex items-center gap-2">
                 <Phone size={13} className="text-gray-300 shrink-0" />
-                <p className="text-sm text-gray-500">+51 999 123 456</p>
+                <p className="text-sm text-gray-500">{config.telefono}</p>
               </div>
               <div className="mt-3 bg-orange-50 rounded-xl p-3">
-                <p className="text-xs text-orange-600 font-semibold">Delivery · 30–40 min</p>
-                <p className="text-xs text-gray-400 mt-0.5">Radio máx. 2 km · Pedido mínimo S/ 24</p>
+                <p className="text-xs text-orange-600 font-semibold">Delivery · {config.delivery_tiempo}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Radio máx. {config.delivery_radio} · Pedido mínimo S/ {config.pedido_minimo}</p>
               </div>
             </div>
           </div>
@@ -77,7 +79,7 @@ function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-gray-100 py-4 px-4">
         <p className="text-center text-xs text-gray-400">
-          © {new Date().getFullYear()} El Rey del Sabor · Todos los derechos reservados
+          © {new Date().getFullYear()} {config.nombre_local} · Todos los derechos reservados
         </p>
       </div>
     </footer>
@@ -106,16 +108,18 @@ function AppContent() {
   const closeMisPedidos = useCallback(() => setMisPedidos(false), []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navbar
         onCartOpen={openCart}
         onOpenLogin={openLogin}
         onOpenMisPedidos={openMisPedidos}
       />
 
-      <main className="pt-14 sm:pt-16">
-        <Hero />
-        <ProductGrid onGoToCheckout={openCheckout} />
+      <main className="pt-14 sm:pt-16 overflow-x-hidden">
+        <Hero onCartOpen={openCart} onCheckout={openCheckout} />
+        <div id="product-grid">
+          <ProductGrid onGoToCheckout={openCheckout} />
+        </div>
       </main>
 
       <Footer />
@@ -158,12 +162,14 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ProductsProvider>
-        <CartProvider>
-          <AppContent />
-        </CartProvider>
-      </ProductsProvider>
-    </AuthProvider>
+    <ConfigProvider>
+      <AuthProvider>
+        <ProductsProvider>
+          <CartProvider>
+            <AppContent />
+          </CartProvider>
+        </ProductsProvider>
+      </AuthProvider>
+    </ConfigProvider>
   );
 }

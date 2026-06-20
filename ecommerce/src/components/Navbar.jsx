@@ -9,10 +9,12 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../context/ConfigContext";
 
 export default function Navbar({ onCartOpen, onOpenLogin, onOpenMisPedidos }) {
   const { count, total } = useCart();
   const { cliente, logout } = useAuth();
+  const config = useConfig();
   const [scrolled, setScrolled] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
@@ -60,7 +62,7 @@ export default function Navbar({ onCartOpen, onOpenLogin, onOpenMisPedidos }) {
               El Rey del Sabor
             </p>
             <p className="text-[11px] text-gray-400 mt-0.5 hidden sm:block">
-              Delivery · 30–40 min
+              Delivery · {config.delivery_tiempo}
             </p>
           </div>
         </div>

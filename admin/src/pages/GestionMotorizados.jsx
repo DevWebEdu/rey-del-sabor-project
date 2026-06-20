@@ -121,7 +121,7 @@ export default function GestionMotorizados({ orders = [] }) {
                   </div>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-3 gap-2 mb-3">
+                  <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3">
                     <div className="bg-slate-700/50 rounded-xl p-2.5 text-center">
                       <p className="text-orange-400 font-black text-xl">{m.count_filtro ?? 0}</p>
                       <p className="text-slate-500 text-xs">{FILTRO_LABEL[filtro]}</p>

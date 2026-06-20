@@ -1,8 +1,7 @@
-import { X, Minus, Plus, Trash2, ShoppingCart, ArrowRight, Bike, Gift } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ShoppingCart, ArrowRight, Bike } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const DELIVERY_FREE_AT = 50;
-const DELIVERY_COST    = 5;
+const DELIVERY_COST = 5;
 
 function ItemRow({ item, dispatch }) {
   const lineTotal = item.price * item.qty;
@@ -59,10 +58,7 @@ function ItemRow({ item, dispatch }) {
 
 export default function CartDrawer({ open, onClose, onCheckout }) {
   const { items, total, count, dispatch } = useCart();
-  const deliveryCost = total >= DELIVERY_FREE_AT ? 0 : DELIVERY_COST;
-  const grandTotal   = total + deliveryCost;
-  const pct          = Math.min((total / DELIVERY_FREE_AT) * 100, 100);
-  const remaining    = Math.max(DELIVERY_FREE_AT - total, 0);
+  const grandTotal = total + DELIVERY_COST;
 
   return (
     <>
@@ -75,7 +71,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
       {/* Drawer */}
       <div className={`fixed top-0 right-0 bottom-0 w-full max-w-xs sm:max-w-sm bg-white z-50 flex flex-col transition-transform duration-300 ease-out shadow-2xl ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100 shrink-0">
           <div className="w-8 h-8 bg-orange-50 rounded-xl flex items-center justify-center">
             <ShoppingCart size={16} className="text-orange-500" />
@@ -94,29 +90,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
           </button>
         </div>
 
-        {/* ── Progreso delivery gratis ── */}
-        {total > 0 && (
-          <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 shrink-0">
-            <div className="flex items-center justify-between mb-1.5 text-xs">
-              <div className="flex items-center gap-1.5 text-gray-600">
-                <Bike size={12} className="text-orange-500" />
-                {deliveryCost === 0
-                  ? <span className="font-semibold text-green-600">¡Delivery gratis!</span>
-                  : <span>Falta <strong>S/ {remaining.toFixed(2)}</strong> para delivery gratis</span>
-                }
-              </div>
-              <span className="text-gray-400">{Math.round(pct)}%</span>
-            </div>
-            <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-orange-500 rounded-full transition-all duration-700"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* ── Items ── */}
+        {/* Items */}
         <div className="flex-1 overflow-y-auto px-4">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center py-12">
@@ -141,10 +115,9 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
           )}
         </div>
 
-        {/* ── Footer ── */}
+        {/* Footer */}
         {items.length > 0 && (
           <div className="border-t border-gray-100 px-4 pt-4 pb-5 space-y-3 shrink-0">
-            {/* Desglose */}
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between text-gray-500">
                 <span>Subtotal</span>
@@ -155,13 +128,7 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
                   <Bike size={12} />
                   <span>Delivery</span>
                 </div>
-                {deliveryCost === 0 ? (
-                  <span className="text-green-500 font-semibold flex items-center gap-1">
-                    <Gift size={11} /> Gratis
-                  </span>
-                ) : (
-                  <span>S/ {DELIVERY_COST.toFixed(2)}</span>
-                )}
+                <span>S/ {DELIVERY_COST.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-gray-900 text-base pt-1.5 border-t border-gray-100">
                 <span>Total</span>
@@ -169,7 +136,6 @@ export default function CartDrawer({ open, onClose, onCheckout }) {
               </div>
             </div>
 
-            {/* CTA */}
             <button
               onClick={() => { onClose(); onCheckout(); }}
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] text-[15px]"

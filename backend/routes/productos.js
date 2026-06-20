@@ -27,10 +27,12 @@ router.get('/', async (req, res) => {
 
   const where = `WHERE ${conditions.join(' AND ')}`;
 
+  // Orden numérico: extrae el número del nombre para ordenar "Combo 1"→1, "Combo 12"→12, etc.
+  const NUM_ORDER = `(NULLIF(regexp_replace(nombre, '[^0-9]', '', 'g'), ''))::integer ASC NULLS LAST`;
   // Orden externo:
-  //   sin categoría → "chocolateado": rn ASC (round-robin) luego cat_ord (combos_pollo primero)
-  //   con categoría → más reciente primero
-  const outerOrder = cat ? `created_at DESC` : `rn ASC, cat_ord ASC`;
+  //   sin categoría → round-robin entre categorías (combos_pollo primero, en orden numérico)
+  //   con categoría → orden numérico por nombre
+  const outerOrder = cat ? NUM_ORDER : `rn ASC, cat_ord ASC`;
 
   try {
     if (page) {
@@ -45,7 +47,10 @@ router.get('/', async (req, res) => {
         `SELECT * FROM (
            SELECT *,
              ${CAT_ORDER} AS cat_ord,
-             ROW_NUMBER() OVER (PARTITION BY categoria ORDER BY created_at DESC) AS rn
+             ROW_NUMBER() OVER (
+               PARTITION BY categoria
+               ORDER BY (NULLIF(regexp_replace(nombre, '[^0-9]', '', 'g'), ''))::integer ASC NULLS LAST, created_at ASC
+             ) AS rn
            FROM productos ${where}
          ) ranked
          ORDER BY ${outerOrder}
@@ -56,9 +61,9 @@ router.get('/', async (req, res) => {
       return res.json({ data: rows, total, page, limit, totalPages });
     }
 
-    // Sin paginación → devuelve todo (uso interno / admin)
+    // Sin paginación → devuelve todo ordenado numéricamente por nombre
     const { rows } = await pool.query(
-      `SELECT * FROM productos ${where} ORDER BY created_at DESC`, params
+      `SELECT * FROM productos ${where} ORDER BY ${CAT_ORDER}, (NULLIF(regexp_replace(nombre, '[^0-9]', '', 'g'), ''))::integer ASC NULLS LAST, nombre ASC`, params
     );
     res.json(rows);
   } catch (err) {

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, CreditCard, Smartphone, Banknote, CheckCircle, User, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useConfig } from '../context/ConfigContext';
 import CheckoutMap from '../components/CheckoutMap';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -17,6 +18,7 @@ const PAYMENT_METHODS = [
 export default function CheckoutPage({ onBack, onSuccess, onRegister }) {
   const { items, total, dispatch } = useCart();
   const { cliente, token }         = useAuth();
+  const config                     = useConfig();
   const [step, setStep]             = useState(1);
   const [tipoEntrega, setTipoEntrega] = useState('');
   const [address, setAddress]       = useState(null);
@@ -124,7 +126,7 @@ export default function CheckoutPage({ onBack, onSuccess, onRegister }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center"
+        className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-y-auto"
       >
         {/* Checkmark */}
         <motion.div
@@ -205,7 +207,7 @@ export default function CheckoutPage({ onBack, onSuccess, onRegister }) {
           transition={{ delay: 1.2, duration: 0.4 }}
           className="text-orange-500 font-bold text-lg mb-5"
         >
-          Llegará en aprox. 30-40 min 🛵
+          Llegará en aprox. {config.delivery_tiempo} 🛵
         </motion.p>
 
         {/* Card promo registro o ver pedidos */}
@@ -264,7 +266,7 @@ export default function CheckoutPage({ onBack, onSuccess, onRegister }) {
 
         {/* Botón WhatsApp */}
         <motion.a
-          href={`https://wa.me/51999999999?text=${encodeURIComponent(
+          href={`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(
             `Buenas, me pongo en contacto para consultar el estado de mi pedido con código *${orderCode}*. ¿Podrían confirmarme el tiempo estimado de entrega? Muchas gracias.`
           )}`}
           target="_blank"
@@ -303,7 +305,7 @@ export default function CheckoutPage({ onBack, onSuccess, onRegister }) {
     <div className="fixed inset-0 bg-gray-50 z-50 overflow-y-auto">
       <div className={`mx-auto min-h-screen ${step === 1 ? 'max-w-4xl' : 'max-w-lg'}`}>
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-100 z-10 px-4 py-4 flex items-center gap-3">
+        <div className="sticky top-0 bg-white border-b border-gray-100 z-10 px-3 sm:px-4 py-3 sm:py-4 flex items-center gap-3">
           <button onClick={onBack} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200">
             <ArrowLeft size={18} />
           </button>

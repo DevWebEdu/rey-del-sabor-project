@@ -20,16 +20,29 @@ const PRESAS = [
   { id: 'pierna', label: 'Pierna', emoji: '🦵' },
 ];
 
-// Detecta cuántas presas corresponden por combo según el texto del producto.
-// 1/4 pollo → 1 presa, 1/2 → 2, 3/4 → 3, entero/1 pollo → 4.
-// Retorna null si el producto no es combos_pollo o no se detecta fracción.
+// Detecta cuántas presas elige el cliente según el pollo entero del combo.
+// Si hay fracción adicional (+ 1/2, + 1/4) viene como pieza fija y no cuenta.
+//   "2 Pollos"              → 8  (2 × 4)
+//   "1 Pollo + 1/2 pollo"  → 4  (solo el entero; el 1/2 es pieza fija)
+//   "1 Pollo + 1/4 pollo"  → 4  (solo el entero; el 1/4 es pieza fija)
+//   "1 Pollo"               → 4
+//   "1/2 Pollo"             → 2  (sin entero → se elige la fracción)
+//   "1/4 Pollo"             → 1
 const getPresasPerCombo = (product) => {
   if (product.category !== 'combos_pollo') return null;
   const text = `${product.name} ${product.description}`.toLowerCase();
-  if (/\b(entero|4\/4)\b/.test(text) || /\b1\s*pollo\b/.test(text)) return 4;
-  if (/\b3\/4\b/.test(text)) return 3;
-  if (/\b(1\/2|medio|media|2\/4)\b/.test(text)) return 2;
-  if (/\b1\/4\b/.test(text)) return 1;
+
+  // Pollos enteros primero (tienen prioridad sobre fracciones)
+  const multiPollo = text.match(/\b(\d+)\s*pollos\b/);
+  if (multiPollo) return parseInt(multiPollo[1]) * 4;
+  if (/\b1\s*pollo\b/.test(text)) return 4;
+
+  // Solo fracción (sin pollo entero)
+  if (/\b3\/4\b/.test(text))               return 3;
+  if (/\b(1\/2|medio|media)\b/.test(text)) return 2;
+  if (/\b1\/4\b/.test(text))               return 1;
+  if (/\b(entero|4\/4)\b/.test(text))      return 4;
+
   return null;
 };
 
@@ -305,12 +318,16 @@ export default function ProductDetailModal({ product, onClose, onGoToCheckout })
     <>
       <div onClick={onClose} className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" />
 
-      <div className="fixed inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center z-50">
-        <div className="bg-white w-full md:max-w-lg md:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl max-h-[92vh] flex flex-col">
+      <div className="fixed inset-x-0 bottom-0 sm:inset-0 sm:flex sm:items-center sm:justify-center z-50">
+        <div className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl max-h-[92dvh] sm:max-h-[90vh] flex flex-col">
 
           {/* Image header */}
-          <div className="relative h-52 shrink-0">
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          <div className="relative h-36 sm:h-48 shrink-0">
+            {product.image ? (
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-orange-50 flex items-center justify-center text-6xl">🍗</div>
+            )}
             <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
             <button onClick={onClose}
               className="absolute top-4 right-4 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-md">
@@ -538,7 +555,7 @@ export default function ProductDetailModal({ product, onClose, onGoToCheckout })
           </div>
 
           {/* Footer */}
-          <div className="px-5 py-4 border-t border-gray-100 bg-white space-y-2 shrink-0">
+          <div className="px-4 sm:px-5 py-3 sm:py-4 pb-safe border-t border-gray-100 bg-white space-y-2 shrink-0" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
             <div className="flex items-center justify-between">
               <span className="text-gray-500 text-sm">Total</span>
               <span className="font-black text-xl text-gray-900">S/ {grandTotal.toFixed(2)}</span>
