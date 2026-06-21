@@ -117,12 +117,20 @@ export default function Products() {
 
   const uploadImage = async (file, forPromo = false) => {
     if (!file || !file.type.startsWith('image/')) return;
+
+    // Preview instantáneo
+    const localUrl = URL.createObjectURL(file);
+    if (forPromo) setEditingPromo(p => ({ ...p, imagen_url: localUrl }));
+    else          setEditingProduct(p => ({ ...p, imagen_url: localUrl }));
+
+    // Sube a Cloudinary en segundo plano
     const formData = new FormData();
     formData.append('image', file);
     try {
       const res  = await fetch(`${API_URL}/api/uploads`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: formData });
       const data = await res.json();
       if (data.url) {
+        URL.revokeObjectURL(localUrl);
         if (forPromo) setEditingPromo(p => ({ ...p, imagen_url: data.url }));
         else          setEditingProduct(p => ({ ...p, imagen_url: data.url }));
       }
