@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 
 const ProductDetailModal = lazy(() => import('./ProductDetailModal'));
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+import { imgUrl } from '../utils/imgUrl';
 
 const apiToLocal = (p) => ({
   id:          p.id,
@@ -12,7 +13,7 @@ const apiToLocal = (p) => ({
   description: p.descripcion || '',
   price:       Number(p.precio),
   category:    p.categoria || 'combos_pollo',
-  image:       p.imagen_url || '',
+  image:       imgUrl(p.imagen_url),
 });
 
 // ── Skeleton ──────────────────────────────────────────────────────────

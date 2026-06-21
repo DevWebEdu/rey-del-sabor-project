@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import ProductDetailModal from './ProductDetailModal';
 import { useConfig } from '../context/ConfigContext';
+import { imgUrl } from '../utils/imgUrl';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -83,7 +84,7 @@ function slideToProduct(s) {
     id:          `promo_${s.id}`,
     name:        s.title,
     price:       Number(s.precio || 0),
-    image:       s.imagen_url || '',
+    image:       imgUrl(s.imagen_url),
     category:    tienePollo ? 'combos_pollo' : '',
     description,
   };
@@ -111,7 +112,7 @@ export default function Hero({ onCartOpen }) {
             precio:          p.precio          || null,
             emoji:           p.emoji           || '',
             color:           p.color           || 'linear-gradient(135deg, #FF6B35, #C0392B)',
-            imagen_url:      p.imagen_url      || '',
+            imagen_url:      imgUrl(p.imagen_url),
             productos:       Array.isArray(p.productos) ? p.productos : [],
             vigencia_tipo:   p.vigencia_tipo   || 'rango',
             dias_semana:     p.dias_semana     || [],

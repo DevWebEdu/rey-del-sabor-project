@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Plus, Minus, Star, Clock, ShoppingBag, Zap, CheckCircle, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { imgUrl } from '../utils/imgUrl';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -113,7 +114,7 @@ function ExtraItems({ items, qtys, onChangeQty, fallbackEmoji, loading, flavors,
               isSelected ? 'border-orange-400 bg-orange-50' : 'border-gray-100 bg-gray-50'
             }`}>
               {item.imagen_url ? (
-                <img src={item.imagen_url} alt={item.nombre} className="w-12 h-12 rounded-xl object-cover shrink-0" />
+                <img src={imgUrl(item.imagen_url)} alt={item.nombre} className="w-12 h-12 rounded-xl object-cover shrink-0" />
               ) : (
                 <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl shrink-0">
                   {fallbackEmoji}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Plus, Edit2, Trash2, X, Check, ImagePlus, Megaphone, Search, Calendar, Image as ImageIcon, EyeOff, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import { categories } from '../data/initialData';
 import { useAuth } from '../context/AuthContext';
+import { imgUrl } from '../utils/imgUrl';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -324,7 +325,7 @@ export default function Products() {
                       >
                         <td className="px-4 py-3">
                           {product.imagen_url ? (
-                            <img src={product.imagen_url} alt={product.nombre}
+                            <img src={imgUrl(product.imagen_url)} alt={product.nombre}
                               className="w-11 h-11 rounded-xl object-cover border border-slate-700 group-hover:border-orange-500/40 transition-colors" />
                           ) : (
                             <div className="w-11 h-11 rounded-xl bg-slate-700 flex items-center justify-center text-xl border border-slate-700 group-hover:border-orange-500/40 transition-colors">🍔</div>
@@ -459,7 +460,7 @@ export default function Products() {
                           <div className="absolute -inset-1 rounded-full border border-white/20 pointer-events-none" />
                           <div className="relative w-full h-full rounded-full overflow-hidden"
                             style={{ boxShadow: '0 0 0 2px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)' }}>
-                            <img src={promo.imagen_url} alt={promo.titulo} className="w-full h-full object-cover" />
+                            <img src={imgUrl(promo.imagen_url)} alt={promo.titulo} className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
                           </div>
                         </div>
@@ -569,7 +570,7 @@ export default function Products() {
                   className="h-36 bg-slate-700 rounded-xl border-2 border-dashed border-slate-600 flex flex-col items-center justify-center cursor-pointer hover:border-orange-500 transition-colors overflow-hidden"
                 >
                   {editingProduct.imagen_url ? (
-                    <img src={editingProduct.imagen_url} alt="" className="w-full h-full object-cover" />
+                    <img src={imgUrl(editingProduct.imagen_url)} alt="" className="w-full h-full object-cover" />
                   ) : (
                     <>
                       <ImagePlus size={24} className="text-slate-500 mb-2" />
@@ -716,7 +717,7 @@ export default function Products() {
                       <div className="absolute -inset-1 rounded-full border border-white/25 pointer-events-none" />
                       <div className="relative w-full h-full rounded-full overflow-hidden"
                         style={{ boxShadow: '0 0 0 3px rgba(255,255,255,0.35), 0 16px 40px rgba(0,0,0,0.45)' }}>
-                        <img src={editingPromo.imagen_url} alt="preview" className="w-full h-full object-cover" />
+                        <img src={imgUrl(editingPromo.imagen_url)} alt="preview" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-linear-to-br from-white/10 to-transparent pointer-events-none" />
                       </div>
                     </div>
@@ -809,7 +810,7 @@ export default function Products() {
                       className="w-20 h-20 bg-slate-800 rounded-xl border-2 border-dashed border-slate-700 hover:border-orange-500 flex items-center justify-center cursor-pointer transition-colors overflow-hidden shrink-0"
                     >
                       {editingPromo.imagen_url ? (
-                        <img src={editingPromo.imagen_url} alt="" className="w-full h-full object-contain" />
+                        <img src={imgUrl(editingPromo.imagen_url)} alt="" className="w-full h-full object-contain" />
                       ) : (
                         <ImagePlus size={20} className="text-slate-500" />
                       )}
@@ -973,7 +974,7 @@ export default function Products() {
                         className={`w-full flex items-center gap-3 px-3 py-3 hover:bg-slate-700/50 transition-colors text-left ${isSelected ? 'bg-orange-500/10' : ''}`}
                       >
                         {p.imagen_url ? (
-                          <img src={p.imagen_url} alt={p.nombre} className="w-10 h-10 rounded-lg object-cover shrink-0" />
+                          <img src={imgUrl(p.imagen_url)} alt={p.nombre} className="w-10 h-10 rounded-lg object-cover shrink-0" />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-lg shrink-0">🍔</div>
                         )}

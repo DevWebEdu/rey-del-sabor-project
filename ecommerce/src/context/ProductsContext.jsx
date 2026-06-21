@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { imgUrl } from '../utils/imgUrl';
 
 const ProductsContext = createContext();
 
@@ -10,7 +11,7 @@ const apiToLocal = (p) => ({
   description: p.descripcion || '',
   price:       Number(p.precio),
   category:    p.categoria || 'combos_pollo',
-  image:       p.imagen_url || '',
+  image:       imgUrl(p.imagen_url),
   badge:       '',
   rating:      4.8,
   reviews:     0,
